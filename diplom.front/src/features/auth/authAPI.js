@@ -23,6 +23,7 @@ export const authAPI = {
     
     const response = await api.post('/images/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
+      responseType: 'blob'
     });
     return response.data;
   },
