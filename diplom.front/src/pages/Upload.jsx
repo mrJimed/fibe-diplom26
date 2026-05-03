@@ -223,7 +223,7 @@ const UploadPage = () => {
               style={{ fontSize: 48, color: loading ? "#ccc" : "#1890ff" }}
             />
             <Text strong>
-              {loading ? "Обработка..." : "Нажмите или перетащите файл"}
+              Нажмите или перетащите файл
             </Text>
             <Text type="secondary">
               Поддерживаемые форматы: JPEG, PNG, WEBP, GIF

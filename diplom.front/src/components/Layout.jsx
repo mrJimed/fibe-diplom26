@@ -18,7 +18,6 @@ const Layout = ({ children }) => {
   const menuItems = [
     {
       key: "/upload",
-      icon: <UploadOutlined />,
       label: "Загрузка фото",
     },
     {
@@ -44,38 +43,30 @@ const Layout = ({ children }) => {
         }}
       >
         <div style={{ fontSize: "20px", fontWeight: "bold", color: "#1890ff" }}>
-          Photo Restore
+          Реставратор
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, justifyContent: "flex-end" }}>
           <Menu
             theme="light"
             mode="horizontal"
             selectedKeys={[location.pathname]}
             items={menuItems}
             onClick={({ key }) => navigate(key)}
-            style={{ flex: 1, minWidth: 0, borderBottom: "none" }}
-          />
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "4px 12px",
-              backgroundColor: "#fff",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
+            style={{ 
+              flex: 1, 
+              borderBottom: "none",
+              justifyContent: "flex-end",
+              minWidth: "auto"
             }}
+          />
+          <Button
+            type="text"
+            icon={<LogoutOutlined />}
+            onClick={handleLogout}
+            style={{ fontSize: 16 }}
           >
-            <Button
-              type="text"
-              size="small"
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}
-              iconPosition="end"
-              style={{ marginLeft: "8px", fontSize: 16 }}
-            >
-              {login ?? "Выход"}
-            </Button>
-          </div>
+            {login ?? "Выход"}
+          </Button>
         </div>
       </Header>
       <Content style={{ padding: "24px", background: colorBgContainer }}>
@@ -90,7 +81,7 @@ const Layout = ({ children }) => {
         </div>
       </Content>
       <Footer style={{ textAlign: "center" }}>
-        Photo Restore App ©{new Date().getFullYear()}
+        Реставратор ©{new Date().getFullYear()}
       </Footer>
     </AntLayout>
   );
