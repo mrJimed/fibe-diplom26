@@ -1,4 +1,5 @@
 import cv2
+
 from gfpgan import GFPGANer
 
 _restorer = GFPGANer(
@@ -6,7 +7,8 @@ _restorer = GFPGANer(
     upscale=2,  # коэффициент увеличения
     arch='clean',  # архитектура для v1.3
     channel_multiplier=2,  # множитель каналов
-    bg_upsampler=None  # можно добавить RealESRGAN для фона
+    bg_upsampler=None,  # можно добавить RealESRGAN для фона
+    device='cpu'
 )
 
 
