@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
-import ruRU from 'antd/locale/ru_RU';
-import { useSelector } from 'react-redux';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ConfigProvider } from "antd";
+import ruRU from "antd/locale/ru_RU";
+import { useSelector } from "react-redux";
 
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Upload from './pages/Upload';
-import Layout from './components/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Upload from "./pages/Upload";
+import History from "./pages/History";
+import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -17,13 +18,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Публичные роуты */}
-          <Route 
-            path="/login" 
-            element={isAuthenticated ? <Navigate to="/upload" /> : <Login />} 
+          <Route
+            path="/login"
+            element={isAuthenticated ? <Navigate to="/upload" /> : <Login />}
           />
-          <Route 
-            path="/register" 
-            element={isAuthenticated ? <Navigate to="/upload" /> : <Register />} 
+          <Route
+            path="/register"
+            element={isAuthenticated ? <Navigate to="/upload" /> : <Register />}
           />
 
           {/* Защищённые роуты */}
@@ -33,6 +34,17 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Upload />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <History />
                 </Layout>
               </ProtectedRoute>
             }

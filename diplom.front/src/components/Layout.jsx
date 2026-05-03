@@ -1,8 +1,5 @@
 import { Layout as AntLayout, Menu, Button, theme } from "antd";
-import {
-  UploadOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { UploadOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
@@ -23,6 +20,10 @@ const Layout = ({ children }) => {
       key: "/upload",
       icon: <UploadOutlined />,
       label: "Загрузка фото",
+    },
+    {
+      key: "/history",
+      label: "История",
     },
   ];
 

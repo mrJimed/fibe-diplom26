@@ -2,3 +2,5 @@ uploads
 models
 gfpgan
 __pycache__
+.venv
+.idea

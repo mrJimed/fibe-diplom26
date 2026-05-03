@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import os
 import uuid
 from datetime import datetime, timezone
@@ -7,7 +8,9 @@ import cv2
 import numpy as np
 import requests
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi.responses import JSONResponse
 from fastapi.responses import Response
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config.app_config import UPLOAD_DIR, COLORIZATION_SERVICE_URL
@@ -106,3 +109,48 @@ async def upload_image(
             "X-Image-Id": str(new_image.id)
         }
     )
+
+
+@image_router.get("/history", tags=["Images"])
+async def get_history(
+        current_user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение всех реставраций текущего пользователя
+    Возвращает список пар: оригинал + реставрация (в base64)
+    """
+    # Запрашиваем все изображения пользователя с сортировкой по дате (новые первые)
+    result = await db.execute(
+        select(Image)
+        .where(Image.user_id == current_user.id)
+        .order_by(Image.date.desc())
+    )
+    images = result.scalars().all()
+
+    # Формируем ответ с фото в base64
+    history = []
+    for img in images:
+        # Читаем оригинальное фото (если есть)
+        original_base64 = None
+        if img.orig_image and os.path.exists(img.orig_image):
+            with open(img.orig_image, "rb") as f:
+                original_base64 = base64.b64encode(f.read()).decode('utf-8')
+
+        # Читаем реставрированное фото
+        restored_base64 = None
+        if img.restore_image and os.path.exists(img.restore_image):
+            with open(img.restore_image, "rb") as f:
+                restored_base64 = base64.b64encode(f.read()).decode('utf-8')
+
+        history.append({
+            "id": img.id,
+            "original_image": original_base64,  # base64 строка
+            "restored_image": restored_base64,  # base64 строка
+            "date": img.date.isoformat()
+        })
+
+    return JSONResponse(content={
+        "total": len(history),
+        "history": history
+    })
